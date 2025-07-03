@@ -1,1 +1,21 @@
-
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Tính tuổi của Nguyen Van A</h2>
+  <input type="number" id="namSinh" placeholder="Nhập năm sinh">
+  <button onclick="tinhTuoi()">Tính tuổi</button>
+  <p id="ketQua"></p>
+  <script>
+    function tinhTuoi() {
+      const namHienTai = new Date().getFullYear();
+      const namSinh = document.getElementById("namSinh").value;
+        if (!namSinh || isNaN(namSinh) || namSinh > namHienTai) {
+        document.getElementById("ketQua").textContent = "Năm sinh không hợp lệ!";
+        return;
+      }
+        const tuoi = namHienTai - parseInt(namSinh);
+      document.getElementById("ketQua").textContent = `Nguyen Van A ${tuoi} tuổi.`;
+    }
+  </script>
+</body>
+</html>
