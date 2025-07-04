@@ -47,6 +47,24 @@
             margin-top: 50px;
             font-weight: bold;
         }
+        .excellent {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+        .good {
+            background-color: #8BC34A;
+        }
+        .fair {
+            background-color: #FFC107;
+        }
+        .average {
+            background-color: #FF9800;
+        }
+        .poor {
+            background-color: #F44336;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -64,6 +82,8 @@
                 <th colspan="3">Điểm danh</th>
                 <th colspan="2">Chuyên cần</th>
                 <th colspan="2">Giữa kỳ</th>
+                <th rowspan="2">Điểm TB</th>
+                <th rowspan="2">Xếp loại</th>
             </tr>
             <tr>
                 <th>14/8</th>
@@ -79,10 +99,11 @@
             <!-- Dữ liệu sẽ được điền bằng JavaScript -->
         </tbody>
     </table>
-    <script>
+
+     <script>
         // Dữ liệu sinh viên từ file PDF
         const studentData = [
-            {id: 1, name: "Nguyễn Ngọc Thiên Ái", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 9, gk_word: "Chín"},
+             {id: 1, name: "Nguyễn Ngọc Thiên Ái", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 9, gk_word: "Chín"},
             {id: 2, name: "Hoàng Huy Cường", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 10, gk_word: "Mười"},
             {id: 3, name: "Phạm Cao Cường", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 9, gk_word: "Chín"},
             {id: 4, name: "Thái Dương Ngọc Danh", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 8, gk_word: "Tám"},
@@ -92,13 +113,40 @@
             {id: 8, name: "Võ Lê Ngọc Tùng Dương", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 8, gk_word: "Tám"},
             {id: 9, name: "Lương Minh Giai", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 9, gk_word: "Chín"},
             {id: 10, name: "Ngô Thị Hà Giang", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 9, gk_word: "Chín"},
-           ];
+        ];
+
+        // Hàm tính điểm trung bình
+        function calculateAverage(cc, gk) {
+            return (cc + gk) / 2;
+        }
+
+        // Hàm xác định xếp loại
+        function getClassification(average) {
+            if (average <= 5) return {text: "Kém", class: "poor"};
+            if (average > 5 && average < 7) return {text: "Trung bình", class: "average"};
+            if (average >= 7 && average < 8) return {text: "Khá", class: "fair"};
+            if (average >= 8 && average < 8.5) return {text: "Giỏi", class: "good"};
+            return {text: "Xuất sắc", class: "excellent"};
+        }
+
+        // Hàm sắp xếp theo điểm trung bình giảm dần
+        function sortByAverage(a, b) {
+            const avgA = calculateAverage(a.cc, a.gk);
+            const avgB = calculateAverage(b.cc, b.gk);
+            return avgB - avgA;
+        }
 
         // Hàm điền dữ liệu vào bảng
         function populateTable() {
             const tableBody = document.getElementById('tableBody');
             
-            studentData.forEach(student => {
+            // Sắp xếp dữ liệu theo điểm trung bình giảm dần
+            const sortedData = [...studentData].sort(sortByAverage);
+            
+            sortedData.forEach(student => {
+                const avg = calculateAverage(student.cc, student.gk);
+                const classification = getClassification(avg);
+                
                 const row = document.createElement('tr');
                 
                 row.innerHTML = `
@@ -111,6 +159,8 @@
                     <td>${student.cc_word}</td>
                     <td>${student.gk}</td>
                     <td>${student.gk_word}</td>
+                    <td>${avg.toFixed(2)}</td>
+                    <td class="${classification.class}">${classification.text}</td>
                 `;
                 
                 tableBody.appendChild(row);
