@@ -1,1 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra số nguyên tố</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9f7ef;
+            border-radius: 4px;
+        }
+        .primes-list {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e7f3fe;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kiểm tra số nguyên tố</h1>
+        
+        <div>
+            <label for="numberInput">Nhập một số nguyên dương:</label>
+            <input type="number" id="numberInput" min="1" step="1">
+            <button onclick="checkPrime()">Kiểm tra</button>
+        </div>
+        
+        <div id="result" class="result"></div>
+        
+        <div class="primes-list">
+            <h3>Các số nguyên tố nhỏ hơn 5:</h3>
+            <div id="primesLessThan5"></div>
+        </div>
+    </div>
 
+    <script>
+        // Hàm kiểm tra số nguyên tố
+        function isPrime(num) {
+            if (num <= 1) return false;
+            if (num === 2) return true;
+            if (num % 2 === 0) return false;
+            
+            for (let i = 3; i <= Math.sqrt(num); i += 2) {
+                if (num % i === 0) return false;
+            }
+            
+            return true;
+        }
+        
+        // Hàm kiểm tra khi người dùng nhập số
+        function checkPrime() {
+            const input = document.getElementById("numberInput");
+            const resultDiv = document.getElementById("result");
+            const num = parseInt(input.value);
+            
+            if (isNaN(num) || num < 1) {
+                resultDiv.innerHTML = "Vui lòng nhập một số nguyên dương hợp lệ.";
+                return;
+            }
+            
+            if (isPrime(num)) {
+                resultDiv.innerHTML = `<strong>${num}</strong> là số nguyên tố.`;
+            } else {
+                resultDiv.innerHTML = `<strong>${num}</strong> không phải là số nguyên tố.`;
+            }
+        }
+        
+        // Hàm liệt kê các số nguyên tố nhỏ hơn 5
+        function listPrimesLessThan5() {
+            const primesDiv = document.getElementById("primesLessThan5");
+            const primes = [];
+            
+            for (let i = 1; i < 5; i++) {
+                if (isPrime(i)) {
+                    primes.push(i);
+                }
+            }
+            
+            primesDiv.innerHTML = primes.join(", ");
+        }
+        
+        // Gọi hàm liệt kê khi trang được tải
+        window.onload = listPrimesLessThan5;
+    </script>
+</body>
+</html>
