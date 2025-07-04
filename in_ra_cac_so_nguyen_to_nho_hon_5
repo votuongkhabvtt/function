@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiểm tra số nguyên tố</title>
+    <title>IN RA SỐ NGUYÊN TỐ NHỎ HƠN 5</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -98,7 +98,7 @@
             }
         }
         
-        // Hàm liệt kê các số nguyên tố nhỏ hơn 5
+        // Hàm in ra số nguyên tố nhỏ hơn 5
         function listPrimesLessThan5() {
             const primesDiv = document.getElementById("primesLessThan5");
             const primes = [];
