@@ -1,1 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHUYỂN ĐỔI Feet - Meters</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .converter {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        label {
+            width: 100px;
+            font-weight: bold;
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex-grow: 1;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f4fc;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+        }
+        .formula {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px dashed #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chuyển đổi Feet ↔ Meters</h1>
+        
+        <div class="converter">
+            <div class="input-group">
+                <label for="feet">Feet:</label>
+                <input type="number" id="feet" placeholder="Nhập giá trị feet">
+                <button onclick="convertToMeters()">→ Meters</button>
+            </div>
+            
+            <div class="input-group">
+                <label for="meters">Meters:</label>
+                <input type="number" id="meters" placeholder="Nhập giá trị meters">
+                <button onclick="convertToFeet()">→ Feet</button>
+            </div>
+            
+            <div id="result" class="result">
+                Kết quả sẽ hiển thị ở đây...
+            </div>
+            
+            <div class="formula">
+                <p><strong>Công thức chuyển đổi:</strong></p>
+                <p>1 foot = 0.3048 meters</p>
+                <p>1 meter = 3.28084 feet</p>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        // Hàm chuyển đổi từ feet sang meters
+        function convertToMeters() {
+            const feetInput = document.getElementById("feet");
+            const metersInput = document.getElementById("meters");
+            const resultDiv = document.getElementById("result");
+               if (feetInput.value === "" || isNaN(feetInput.value)) {
+                resultDiv.innerHTML = "Vui lòng nhập giá trị feet hợp lệ";
+                return;
+            }
+            const feet = parseFloat(feetInput.value);
+            const meters = feet * 0.3048;
+            metersInput.value = meters.toFixed(4);
+            resultDiv.innerHTML = `${feet} feet = ${meters.toFixed(4)} meters`;
+        }
+        // Hàm chuyển đổi từ meters sang feet
+        function convertToFeet() {
+            const metersInput = document.getElementById("meters");
+            const feetInput = document.getElementById("feet");
+            const resultDiv = document.getElementById("result");
+                if (metersInput.value === "" || isNaN(metersInput.value)) {
+                resultDiv.innerHTML = "Vui lòng nhập giá trị meters hợp lệ";
+                return;
+            }
+            const meters = parseFloat(metersInput.value);
+            const feet = meters * 3.28084;
+            feetInput.value = feet.toFixed(4);
+            resultDiv.innerHTML = `${meters} meters = ${feet.toFixed(4)} feet`;
+        }
+        
+        // Cho phép nhấn Enter để chuyển đổi
+        document.getElementById("feet").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                convertToMeters();
+            }
+        });
+        
+        document.getElementById("meters").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                convertToFeet();
+            }
+        });
+    </script>
+</body>
+</html>
