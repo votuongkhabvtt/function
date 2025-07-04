@@ -3,158 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách sinh viên Lão Khoa YHCT Lớp 03</title>
+    <title>Danh sách điểm Lão Khoa YHCT Lớp 03</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            line-height: 1.6;
         }
-        h1, h2 {
-            color: #2c3e50;
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .school-name {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .department {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .class-info {
+            margin-bottom: 20px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid #000;
             padding: 8px;
-            text-align: left;
+            text-align: center;
         }
         th {
             background-color: #f2f2f2;
-            position: sticky;
-            top: 0;
+            font-weight: bold;
         }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+        .footer {
+            margin-top: 30px;
+            text-align: right;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .section {
-            margin-bottom: 40px;
+        .signature {
+            margin-top: 50px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>TRƯỜNG ĐẠI HỌC HÓA BINH - KHOA Y</h1>
-        <h2>ĐIỂM THÀNH PHẦN MÔN: LÃO KHOA Y HỌC CỔ TRUYỀN</h2>
-        <h3>LỚP YHCT519-03</h3>
-        
-        <div class="section">
-            <h2>1. Danh sách sinh viên đầy đủ</h2>
-            <table id="fullList">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Họ và tên</th>
-                        <th>Điểm danh 14/8</th>
-                        <th>Điểm danh 21/8</th>
-                        <th>Điểm danh 28/8</th>
-                        <th>Chuyên cần</th>
-                        <th>Chuyên cần (chữ)</th>
-                        <th>Giữa kỳ</th>
-                        <th>Giữa kỳ (chữ)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Dữ liệu sẽ được thêm bằng PHP/MySQL -->
-                    <?php
-                    // Kết nối database
-                    $conn = new mysqli("localhost", "username", "password", "university_db");
-                    
-                    // Kiểm tra kết nối
-                    if ($conn->connect_error) {
-                        die("Kết nối thất bại: " . $conn->connect_error);
-                    }
-                    
-                    // Truy vấn danh sách đầy đủ
-                    $sql = "SELECT * FROM students ORDER BY id";
-                    $result = $conn->query($sql);
-                    
-                    if ($result->num_rows > 0) {
-                        while($row = $result->fetch_assoc()) {
-                            echo "<tr>
-                                <td>".$row["id"]."</td>
-                                <td>".$row["full_name"]."</td>
-                                <td>".$row["attendance_14_8"]."</td>
-                                <td>".$row["attendance_21_8"]."</td>
-                                <td>".$row["attendance_28_8"]."</td>
-                                <td>".$row["attendance_score"]."</td>
-                                <td>".$row["attendance_word"]."</td>
-                                <td>".$row["midterm_score"]."</td>
-                                <td>".$row["midterm_word"]."</td>
-                            </tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='9'>Không có dữ liệu</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="section">
-            <h2>2. Điểm trung bình sinh viên (xếp hạng giảm dần)</h2>
-            <table id="averageScore">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Họ và tên</th>
-                        <th>Điểm chuyên cần</th>
-                        <th>Điểm giữa kỳ</th>
-                        <th>Điểm trung bình</th>
-                        <th>Xếp hạng</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    // Truy vấn tính điểm trung bình và xếp hạng
-                    $sql = "SELECT 
-                                id, 
-                                full_name, 
-                                attendance_score, 
-                                midterm_score,
-                                (attendance_score + midterm_score)/2 AS average_score
-                            FROM 
-                                students
-                            ORDER BY 
-                                average_score DESC";
-                    
-                    $result = $conn->query($sql);
-                    
-                    if ($result->num_rows > 0) {
-                        $rank = 1;
-                        while($row = $result->fetch_assoc()) {
-                            echo "<tr>
-                                <td>".$row["id"]."</td>
-                                <td>".$row["full_name"]."</td>
-                                <td>".$row["attendance_score"]."</td>
-                                <td>".$row["midterm_score"]."</td>
-                                <td>".number_format($row["average_score"], 2)."</td>
-                                <td>".$rank."</td>
-                            </tr>";
-                            $rank++;
-                        }
-                    } else {
-                        echo "<tr><td colspan='6'>Không có dữ liệu</td></tr>";
-                    }
-                    
-                    // Đóng kết nối
-                    $conn->close();
-                    ?>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="footer">
-            <p>Hà Nội, ngày <?php echo date("d/m/Y"); ?></p>
-            <p>Giảng viên: PGS.TS.BS. VÕ TƯỜNG KHA</p>
-        </div>
+    <div class="header">
+        <div class="school-name">TRƯỜNG ĐẠI HỌC HÓA BINH</div>
+        <div class="department">KHOA Y - ĐIỂM THÀNH PHẦN MÔN: LÃO KHOA Y HỌC CỔ TRUYỀN</div>
+        <div class="class-info">LỚP YHCT519-03</div>
     </div>
+
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th rowspan="2">TT</th>
+                <th rowspan="2">Họ và tên</th>
+                <th colspan="3">Điểm danh</th>
+                <th colspan="2">Chuyên cần</th>
+                <th colspan="2">Giữa kỳ</th>
+            </tr>
+            <tr>
+                <th>14/8</th>
+                <th>21/8</th>
+                <th>28/8</th>
+                <th>Điểm</th>
+                <th>Bằng chữ</th>
+                <th>Điểm</th>
+                <th>Bằng chữ</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Dữ liệu sẽ được điền bằng JavaScript -->
+        </tbody>
+    </table>
+    <script>
+        // Dữ liệu sinh viên từ file PDF
+        const studentData = [
+            {id: 1, name: "Nguyễn Ngọc Thiên Ái", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 9, gk_word: "Chín"},
+            {id: 2, name: "Hoàng Huy Cường", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 10, gk_word: "Mười"},
+            {id: 3, name: "Phạm Cao Cường", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 9, gk_word: "Chín"},
+            {id: 4, name: "Thái Dương Ngọc Danh", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 8, gk_word: "Tám"},
+            {id: 5, name: "Nguyễn Thị Đào", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 8, gk_word: "Tám"},
+            {id: 6, name: "Nguyễn Thị Blch Đào", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 9, gk_word: "Chín"},
+            {id: 7, name: "Đinh Thị Kim Dung", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 9, gk_word: "Chín"},
+            {id: 8, name: "Võ Lê Ngọc Tùng Dương", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 8, gk_word: "Tám"},
+            {id: 9, name: "Lương Minh Giai", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 9, gk_word: "Chín"},
+            {id: 10, name: "Ngô Thị Hà Giang", d14: "x", d21: "x", d28: "x", cc: 8, cc_word: "Tám", gk: 9, gk_word: "Chín"},
+           ];
+
+        // Hàm điền dữ liệu vào bảng
+        function populateTable() {
+            const tableBody = document.getElementById('tableBody');
+            
+            studentData.forEach(student => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${student.id}</td>
+                    <td>${student.name}</td>
+                    <td>${student.d14}</td>
+                    <td>${student.d21}</td>
+                    <td>${student.d28}</td>
+                    <td>${student.cc}</td>
+                    <td>${student.cc_word}</td>
+                    <td>${student.gk}</td>
+                    <td>${student.gk_word}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Gọi hàm khi trang tải xong
+        window.onload = populateTable;
+    </script>
 </body>
 </html>
