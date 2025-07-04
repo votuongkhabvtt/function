@@ -1,1 +1,354 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra số nguyên tố</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #1a2a6c;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .description {
+            color: #555;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .check-section {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .check-title {
+            color: #1a2a6c;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        
+        .input-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        input[type="number"] {
+            padding: 14px 20px;
+            border: 2px solid #1a2a6c;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            width: 300px;
+            max-width: 100%;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="number"]:focus {
+            border-color: #b21f1f;
+            box-shadow: 0 0 0 3px rgba(178, 31, 31, 0.3);
+        }
+        
+        button {
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(-1px);
+        }
+        
+        .result {
+            text-align: center;
+            font-size: 1.4rem;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+        
+        .prime {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            color: white;
+        }
+        
+        .not-prime {
+            background: linear-gradient(to right, #f44336, #c62828);
+            color: white;
+        }
+        
+        .primes-section {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .primes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .primes-title {
+            color: #1a2a6c;
+            font-size: 1.8rem;
+        }
+        
+        .count {
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .primes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            background-color: white;
+        }
+        
+        .prime-number {
+            padding: 10px;
+            text-align: center;
+            background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+            color: white;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        
+        .prime-number:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        
+        .info {
+            text-align: center;
+            color: #555;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .description {
+                font-size: 1rem;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            input[type="number"] {
+                width: 100%;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .primes-container {
+                grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>KIỂM TRA SỐ NGUYÊN TỐ</h1>
+            <p class="description">Số nguyên tố là số tự nhiên lớn hơn 1 và chỉ có hai ước số là 1 và chính nó. 
+                Chương trình này giúp bạn kiểm tra một số có phải là số nguyên tố không và liệt kê tất cả các số nguyên tố nhỏ hơn 10.000.</p>
+        </header>
+        
+        <div class="check-section">
+            <h2 class="check-title">Kiểm tra một số nguyên</h2>
+            <div class="input-group">
+                <input type="number" id="numberInput" placeholder="Nhập số nguyên dương" min="2">
+                <button onclick="checkPrime()">Kiểm tra</button>
+            </div>
+            <div class="result" id="result">Kết quả sẽ hiển thị ở đây</div>
+        </div>
+        
+        <div class="primes-section">
+            <div class="primes-header">
+                <h2 class="primes-title">Các số nguyên tố nhỏ hơn 10.000</h2>
+                <div class="count">Tổng: <span id="primeCount">0</span> số</div>
+            </div>
+            <div class="primes-container" id="primesContainer"></div>
+            <p class="info">Có tổng cộng 1229 số nguyên tố nhỏ hơn 10.000</p>
+        </div>
+    </div>
+
+    <script>
+        // Hàm kiểm tra số nguyên tố
+        function isPrime(n) {
+            if (n < 2) return false;
+            if (n === 2) return true;
+            if (n % 2 === 0) return false;
+            
+            // Chỉ cần kiểm tra đến căn bậc 2 của n
+            const limit = Math.sqrt(n);
+            for (let i = 3; i <= limit; i += 2) {
+                if (n % i === 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // Hàm kiểm tra khi người dùng nhập số
+        function checkPrime() {
+            const input = document.getElementById('numberInput');
+            const resultDiv = document.getElementById('result');
+            const number = parseInt(input.value);
+            
+            // Kiểm tra đầu vào hợp lệ
+            if (isNaN(number) || number < 2) {
+                resultDiv.textContent = "Vui lòng nhập số nguyên lớn hơn hoặc bằng 2";
+                resultDiv.className = 'result';
+                return;
+            }
+            
+            // Kiểm tra số nguyên tố
+            if (isPrime(number)) {
+                resultDiv.textContent = `🎉 ${number} LÀ số nguyên tố!`;
+                resultDiv.className = 'result prime';
+            } else {
+                resultDiv.textContent = `❌ ${number} KHÔNG phải là số nguyên tố!`;
+                resultDiv.className = 'result not-prime';
+            }
+        }
+        
+        // Hàm tìm và hiển thị tất cả số nguyên tố < 10000
+        function generatePrimes() {
+            const primesContainer = document.getElementById('primesContainer');
+            const primeCountSpan = document.getElementById('primeCount');
+            let count = 0;
+            
+            // Dùng sàng Eratosthenes để tối ưu việc tìm số nguyên tố
+            const max = 10000;
+            const sieve = new Array(max).fill(true);
+            sieve[0] = false;
+            sieve[1] = false;
+            
+            for (let i = 2; i <= Math.sqrt(max); i++) {
+                if (sieve[i]) {
+                    for (let j = i * i; j < max; j += i) {
+                        sieve[j] = false;
+                    }
+                }
+            }
+            
+            // Hiển thị các số nguyên tố
+            for (let i = 2; i < max; i++) {
+                if (sieve[i]) {
+                    const primeElement = document.createElement('div');
+                    primeElement.className = 'prime-number';
+                    primeElement.textContent = i;
+                    primesContainer.appendChild(primeElement);
+                    count++;
+                }
+            }
+            
+            // Hiển thị tổng số lượng
+            primeCountSpan.textContent = count;
+        }
+        
+        // Khởi tạo chương trình khi trang được tải
+        window.onload = function() {
+            generatePrimes();
+            
+            // Cho phép nhấn Enter để kiểm tra
+            document.getElementById('numberInput').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    checkPrime();
+                }
+            });
+        };
+    </script>
+</body>
+</html>
 
